@@ -31,3 +31,15 @@ seqlengths(pub_ce11)<-seqlengths(Celegans)
 export(pub_ce11, paste0(publicfiles$FileName[i],"_ce11.gtf"),  "gtf")
 export(pub_ce11, paste0(publicfiles$FileName[i], "_ce11.bw"), "bw")
 }
+#to download from modENCODE
+myftp=read.table("./modencodefiles.txt", header = TRUE, stringsAsFactors = FALSE)
+#pathForFiles="/Users/imac/Desktop/Bolaji/PhD/PhD/Project_experiments/General/analysis/Bioinformatics_scripts/Bigwiggle"
+#download.file(myftp,paste0(pathForFiles,basename(myftp)))
+#download.file(myftp,paste0(basename(myftp)))
+for (i in 1:dim(myftp)[1]) {
+  download.file(myftp$Sample[i],destfile=paste0(myftp$FileName[i],".wig.gz"))
+}
+#to uncompress the files
+system("gunzip ./*gz")
+
+a<-wigToBigWig("./AMA-1.wig", seqinfo(Celegans), clip = TRUE)
