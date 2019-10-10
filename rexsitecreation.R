@@ -4,6 +4,9 @@ library(BSgenome.Celegans.UCSC.ce11)
 library(rtracklayer)
 library(ggbio)
 
+# BiocManager::install(c("gdata","GenomicRanges","BSgenome.Celegans.UCSC.ce11",
+# "rtracklayer","ggbio"))
+
 
 # get rex sites from Albritton paper
 Albritton_elife2017="https://elifesciences.org/download/aHR0cHM6Ly9jZG4uZWxpZmVzY2llbmNlcy5vcmcvYXJ0aWNsZXMvMjM2NDUvZWxpZmUtMjM2NDUtc3VwcDEtdjEuemlw/elife-23645-supp1-v1.zip?_hash=8w773VoPpu6mx1PUQppgaFNrEniZQDyGrnfBDR6QDt8%3D"
@@ -15,7 +18,8 @@ rexSites<-read.xls("./SupplementaryFile1D.xls")
 rexSites$Chromosome<-gsub("CHROMOSOME_","chr",rexSites$Chromosome)
 
 # make Granges
-rexGR<-GRanges(seqnames=rexSites$Chromosome,ranges=IRanges(start=rexSites$Start,end=rexSites$End),
+rexGR<-GRanges(seqnames=rexSites$Chromosome,
+               ranges=IRanges(start=rexSites$Start, end=rexSites$End),
                strand="*", rexSites[,c("Rank","Previous.Name","strength.category")])
 
 # get liftover chain file from UCSC
@@ -30,10 +34,49 @@ rexGR_ce11<-unlist(liftOver(rexGR,chain=chainFile))
 seqlevels(rexGR_ce11)<-seqlevels(Celegans)
 seqlengths(rexGR_ce11)<-seqlengths(Celegans)
 
+# export as gtf
 rexGR_ce11$strength.category<-factor(rexGR_ce11$strength.category,levels=c("strong","intermediate","weak"))
-export(rexGR_ce11, "rexsitesce11.gtf","gtf")
+export(rexGR_ce11, "rexsites_Albritton2017_ce11.gtf","gtf")
+
+# export as bed
+rexGR_ce11$name<-ifelse(is.na(rexGR_ce11$Previous.Name),
+                        paste0("ErcanRex",rexGR_ce11$Rank),
+                        paste0("ErcanRex",rexGR_ce11$Rank,"_",rexGR_ce11$Previous.Name))
+rexGR_ce11$score<-as.numeric(rexGR_ce11$strength.category)
+rexGR_ce11$score<-round(rexGR_ce11$score*1000/max(rexGR_ce11$score),0)
+export(rexGR_ce11,"rexsites_Albritton2017_ce11.bed","bed")
 
 # plot rex sites on chromosome layout
 autoplot(rexGR_ce11,layout="karyogram",aes(color = strength.category,fill = strength.category)) +
   theme_alignment() +
   ggtitle("Strength of rex sites")
+
+file.remove("Albritton_elife2017.zip")
+file.remove("SupplementaryFile1D.xls")
+
+#########################
+# Crane 2015 rex sites
+#########################
+
+# using excell sheet created manually from paper
+rex_Crane<-read.xls("rexSites_Crane2015.xlsx")
+rexCraneGR<-GRanges(seqnames="chrX",
+                    ranges=IRanges(start=rex_Crane$midpoint, end=rex_Crane$midpoint+1),
+                    strand="*", rex_Crane[,c("Rank","Name","HOTcold", "boundaryOverlap",                                             "X.Anderson2019")])
+
+rexCraneGR_ce11<-unlist(liftOver(rexCraneGR,chain=chainFile))
+rexCraneGR_ce11$name<-rexCraneGR_ce11$Name
+rexCraneGR_ce11$score<-ifelse(rexCraneGR_ce11$boundaryOverlap=="notAtBoundary",500,1000)
+
+export(rexCraneGR_ce11,"rexsites_Crane2015_ce11.bed","bed")
+
+
+#########################
+# Anderson 2019 rex sites
+#########################
+
+rexAndersonGR_ce11<-rexCraneGR_ce11[rexCraneGR_ce11$X.Anderson2019=="yes"]
+rexAndersonGR_ce11$score<-1000
+
+export(rexAndersonGR_ce11,"rexsites_Anderson2019_ce11.bed","bed")
+
