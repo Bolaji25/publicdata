@@ -31,5 +31,5 @@ for (i in 1:dim(publicfiles)[1]) {
 
   #to export the filess
   export(pub_ce11, paste0(publicfiles$FileName[i], "_ce11.bw"), "bw")
-  file.remove(paste0(publicFiles$FileName[i],"_ws220.wig"))
+  file.remove(paste0(publicfiles$FileName[i],"_ws220.wig"))
 }
