@@ -1,14 +1,17 @@
 library(BSgenome.Celegans.UCSC.ce11)
 library(rtracklayer)
 
-# download the liftover chain file and unzip it
-download.file("http://hgdownload.soe.ucsc.edu/goldenPath/ce10/liftOver/ce10ToCe11.over.chain.gz", destfile="ce10ToCe11.over.chain.gz")
-system("gunzip ce10ToCe11.over.chain.gz")
+if (! file.exists("ce10ToCe11.over.chain")) {
+  # download the liftover chain file and unzip it
+  download.file("http://hgdownload.soe.ucsc.edu/goldenPath/ce10/liftOver/ce10ToCe11.over.chain.gz", 
+		destfile="ce10ToCe11.over.chain.gz")
+  system("gunzip ce10ToCe11.over.chain.gz")
+}
 
 #read in the public files' table, always set header so that the header is defined
 publicfiles<-read.table("./kranz_files.txt", header=TRUE, stringsAsFactors = FALSE)
 
-for (i in 1:dim(publicfiles)[1]) {
+for (i in 7:dim(publicfiles)[1]) {
   download.file(publicfiles$Sample[i],destfile=paste0(publicfiles$FileName[i],"_ws220.wig.gz"))
   #unzip the file
   gunzipCMD=paste0("gunzip ",publicfiles$FileName[i],"_ws220.wig.gz")

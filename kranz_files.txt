@@ -1,5 +1,4 @@
 FileName Sample
-HCP6_N2_MxE https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE45678&format=file&file=GSE45678%5FHCP6%5FN2%5FMxEmb%5Faverage%5Fvar%2Ewig%2Egz
 AMA1_N2_Emb https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE45678&format=file&file=GSE45678%5FAMA1%5FN2%5Fembryo%5Faverage%5Fvar%2Ewig%2Egz
 CAPG1_N2_MxE https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE45678&format=file&file=GSE45678%5FCAPG1%5FN2%5FMxemb%5Faverage%5Fvar%2Ewig%2Egz
 CAPG2_N2_MxE https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE45678&format=file&file=GSE45678%5FCAPG2%5FN2%5FMxEmb%5Faverage%5Fvar%2Ewig%2Egz

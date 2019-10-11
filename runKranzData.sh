@@ -1,9 +1,10 @@
 #! /bin/bash
 
 ## Allocate resources
-#SBATCH --time=0-2:00:00
-#SBATCH --mem-per-cpu=16G
+#SBATCH --time=0-12:00:00
+#SBATCH --mem=32G
 #SBATCH --partition=all
+##SBATCH --tmp=32G
 
 ## job name
 #SBATCH --job-name="kranzData"
