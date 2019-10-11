@@ -15,3 +15,4 @@ lcap_wt_log2_l3_rev https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE114483&for
 scap_wt_l3_fwd https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE114490&format=file&file=GSE114490%5Fscap%5Fwt%5Fl3%5Ffwd%2Ebw
 scap_wt_l3_rev https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE114490&format=file&file=GSE114490%5Fscap%5Fwt%5Fl3%5Frev%2Ebw
 AMA-1_N2_L3 ftp://data.modencode.org/all_files/cele-interpreted-1/2439_Snyder_N2_POLII_L3_combined.wig.gz
+PHA-4_wt_L3 ftp://data.modencode.org/all_files/cele-interpreted-3/3215_Snyder_PHA-4_GFP_L3_combined.wig.gz
