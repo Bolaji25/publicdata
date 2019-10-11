@@ -68,6 +68,10 @@ download.file(Albritton_elife2017,destfile="./Albritton_elife2017.zip")
 unzip("./Albritton_elife2017.zip",files="Tables/SupplementaryFile1E.xlsx",junkpaths=T)
 rexMotifs<-read.xls("./SupplementaryFile1E.xlsx")
 
+# take only strong motifs (score 7-10 which are enriched on X vs autosomes)
+rexMotifs<-rexMotifs[rexMotifs$Score>=7,]
+# 218 sites left
+
 # change chr names to UCSC formats
 rexMotifs$Chromosome<-gsub("CHROMOSOME_","chr",rexMotifs$Chromosome)
 rexMotifs$Chromosome<-gsub("MtDNA","M",rexMotifs$Chromosome)
