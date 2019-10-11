@@ -38,7 +38,7 @@ seqlevels(rexGR_ce11)<-seqlevels(Celegans)
 seqlengths(rexGR_ce11)<-seqlengths(Celegans)
 
 # export as gtf
-rexGR_ce11$strength.category<-factor(rexGR_ce11$strength.category,levels=c("strong","intermediate","weak"))
+rexGR_ce11$strength.category<-factor(rexGR_ce11$strength.category,levels=c("weak","intermediate","strong"))
 export(rexGR_ce11, "rexsites_Albritton2017_ce11.gtf","gtf")
 
 # export as bed
