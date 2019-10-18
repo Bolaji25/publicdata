@@ -90,7 +90,7 @@ file.remove((gsub(".gz$","",basename(simpleRepeats))))
 
 nestedRepeats<-"http://hgdownload.soe.ucsc.edu/goldenPath/ce11/database/nestedRepeats.txt.gz"
 nested<-downloadWebData(nestedRepeats)
-nestedGR<-with(nested, df2gr(V2,V3,V4,"*"))
+nestedGR<-with(nested, df2gr(V2,V3+1,V4+1,"*"))
 nested$V16<-ifelse(nested$V16==nested$V17,"",nested$V16)
 nestedGR$name<-with(nested,paste(V5,V16,V17,sep="__"))
 hist(width(nestedGR),breaks=100,main="Width of nestedRepeat regions")
