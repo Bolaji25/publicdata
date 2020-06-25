@@ -3,7 +3,7 @@ library(rtracklayer)
 
 if (! file.exists("ce10ToCe11.over.chain")) {
   # download the liftover chain file and unzip it
-  download.file("http://hgdownload.soe.ucsc.edu/goldenPath/ce10/liftOver/ce10ToCe11.over.chain.gz", 
+  download.file("http://hgdownload.soe.ucsc.edu/goldenPath/ce10/liftOver/ce10ToCe11.over.chain.gz",
 		destfile="ce10ToCe11.over.chain.gz")
   system("gunzip ce10ToCe11.over.chain.gz")
 }
@@ -36,3 +36,21 @@ for (i in 1:dim(publicfiles)[1]) {
   export(pub_ce11, paste0(publicfiles$FileName[i], "_ce11.bw"), "bw")
   file.remove(paste0(publicfiles$FileName[i],"_ws220.wig"))
 }
+
+
+avrSignal<-data.frame(sample=publicfiles$FileName, autosomeAvr=NA,XchrAvr=NA)
+#bwList<-list.files(pattern=".*bw")
+autosomes<-paste0("chr",c("I","II","III","IV","V"))
+
+for (i in 1:dim(avrSignal)[1]) {
+  bw<-import(paste0(publicfiles$FileName[i], "_ce11.bw"),format="bigwig")
+
+  avrSignal$autosomeAvr[i]<-mean(bw$score[as.vector(seqnames(bw) %in% autosomes)])
+  avrSignal$XchrAvr[i]<-mean(bw$score[as.vector(seqnames(bw) == "chrX")])
+}
+
+
+avrSignal$difference<-avrSignal$XchrAvr-avrSignal$autosomeAvr
+avrSignal$exp2<-round(2^avrSignal$difference,3)
+
+write.csv(avrSignal,"XvsAutosomeAvrSignal.csv",row.names=F)
